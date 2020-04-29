@@ -14,7 +14,7 @@ var config = {
 
   output: {
     path: createPath('dist'),
-    library: 'webpack-minio-plugin',
+    library: 'webpack-badge-plugin',
     libraryTarget: 'umd',
     filename: 'plugin.js'
   },

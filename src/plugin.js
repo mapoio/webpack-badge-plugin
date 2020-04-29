@@ -1,11 +1,13 @@
-const _ = require('lodash')
-const { BadgeFactory } = require('gh-badges')
+import http from 'http'
+import https from 'https'
+import {BadgeFactory} from 'gh-badges'
 
 http.globalAgent.maxSockets = https.globalAgent.maxSockets = 50
 
-class BadgePlugin {
+export class BadgePlugin {
   constructor(badges = [], options = {}) {
     this.badgeList = badges
+    this.options = options
     this.Barge = new BadgeFactory()
   }
 
@@ -13,19 +15,19 @@ class BadgePlugin {
     compiler.hooks.thisCompilation.tap('BadgePlugin', (compilation) => {
       if (!Array.isArray(this.badgeList)) {
         compilation.errors.push(new Error('badgeList must be array'))
-        return
+
+        return undefined
       }
       this.badgeList.forEach(item => {
-        const { fileName, ...props } = item
-        const badge = this.Barge.create(props)
-        compilation.assets[fileName] = {
-          source: function() { return badge },
-          size: function() { return badge.length }
+        const badge = this.Barge.create(item)
+
+        compilation.assets[item.fileName] = {
+          source() {return badge},
+          size() {return badge.length}
         }
       })
     })
   }
 }
 
-module.exports = BadgePlugin
-
+export default BadgePlugin
