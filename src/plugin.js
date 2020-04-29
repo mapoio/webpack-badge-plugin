@@ -1,11 +1,9 @@
-import http from 'http'
-import https from 'https'
-import _ from 'lodash'
-import { BadgeFactory } from 'gh-badges'
+const _ = require('lodash')
+const { BadgeFactory } = require('gh-badges')
 
 http.globalAgent.maxSockets = https.globalAgent.maxSockets = 50
 
-export class BadgePlugin {
+class BadgePlugin {
   constructor(badges = [], options = {}) {
     this.badgeList = badges
     this.Barge = new BadgeFactory()
@@ -29,4 +27,5 @@ export class BadgePlugin {
   }
 }
 
-export default BadgePlugin
+module.exports = BadgePlugin
+
